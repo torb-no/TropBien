@@ -4,10 +4,10 @@
 
 ## entity:draw()
 
-## entity:canStandOn()
-
 # Properites
 
 ## entity.pos 
 
 ## entity.size
+
+## entity.canStandOn

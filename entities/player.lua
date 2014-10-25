@@ -1,16 +1,19 @@
 local player, o = {}, {}
 
-local ACCELECARTION = 400
-local TOP_VELOCITY = 150
-local FALL_ACCELERATION = 60
-local TERMINAL_VELOCITY = 100
+local ACCELECARTION = 700
+local JUMP_ACC = -20000
+local TOP_VELOCITY = 500
+local FALL_ACCELERATION = 400
+local TERMINAL_VELOCITY = 150
+local FRICTION = 500
+local IMAGE = love.graphics.newImage("graphics/walk/Hat_man1.png")
 
-function player.new(x,y)
-	o.pos = vector.new(x, y) -- position
+function player.new(options)
+	o.pos = vector.new(options.x, options.y) -- position
 	o.vel = vector.new(0, 0) -- velocity
 	o.acc = vector.new(0, 0) -- acceleration
-	o.size = vector.new(20, 60) -- width and height
-	o.isPlayer = true
+	o.size = vector.new(IMAGE:getWidth(), IMAGE:getHeight()) -- width and height
+	o.canStandOn = false
 	
 	return o
 end
@@ -26,6 +29,14 @@ function o:update(dt)
 	-- gravity
 	self.acc.y = self.acc.y + FALL_ACCELERATION
 	
+	-- friction
+	local friction = self.vel:clone()
+	friction = friction * -1
+	friction:normalize_inplace()
+	friction = friction * FRICTION
+	self.acc.x = self.acc.x + friction.x
+
+	
 	-- velocity
 	self.vel = self.vel + self.acc * SPD * dt
 	self.vel.x = helpers.limit(self.vel.x, -TOP_VELOCITY, TOP_VELOCITY)
@@ -36,10 +47,10 @@ function o:update(dt)
 	
 	-- collision detection
 	for i,v in ipairs(entities) do
-		if not v.isPlayer then
-			print(helpers.isAbove(self, v))
-			if v:canStandOn() and helpers.withinX(self, v) and helpers.isAbove(self, v) then
+		if v.canStandOn then
+			if helpers.withinX(self, v) and helpers.isAbove(self, v) then
 				self.pos.y = helpers.limit(self.pos.y, -999, v.pos.y - self.size.y)
+				self.inAir = false
 			end
 		end
 	end
@@ -47,9 +58,14 @@ function o:update(dt)
 	o.acc = o.acc * 0
 end
 
+function o:jump()
+	self.acc.y = JUMP_ACC
+end
+
 function o:draw()
-	love.graphics.setColor(255, 0, 0)
-	love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.draw(IMAGE, self.pos.x, self.pos.y)
+	-- love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 end
 
 return player

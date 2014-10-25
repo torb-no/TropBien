@@ -30,7 +30,7 @@ function helpers.withinX(a, b)
 end
 
 function helpers.isAbove(a, b)
-	return a.pos.y + a.size.y < b.pos.y + COLLISION_MARGIN
+	return a.pos.y + a.size.y < b.pos.y + b.size.y
 end
 
 return helpers

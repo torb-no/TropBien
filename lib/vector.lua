@@ -43,6 +43,11 @@ function vector:clone()
 	return new(self.x, self.y)
 end
 
+-- test
+function vector:print()
+	return print("x:" .. self.x .. " y:" .. self.y)
+end
+
 function vector:unpack()
 	return self.x, self.y
 end
