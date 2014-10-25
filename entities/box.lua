@@ -6,6 +6,7 @@ function box.new(options)
 	self.size = vector.new(options.width, options.height)
 	self.pos = vector.new(options.x, options.y)
 	self.canStandOn = true
+	self.drawing = options.drawing
 
 	return self
 end
@@ -13,8 +14,15 @@ end
 function box:update() end
 
 function box:draw()
-	love.graphics.setColor(255, 0, 0, 100)
-	--love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+	if self.drawing then
+		if self.drawing == "rectangle" then
+			love.graphics.setColor(170, 121, 68)
+			love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+		else
+			love.graphics.setColor(255, 255, 255)
+			love.graphics.draw(self.drawing, self.pos.x, self.pos.y)
+		end
+	end
 end
 
 return box

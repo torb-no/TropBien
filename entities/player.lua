@@ -45,15 +45,18 @@ function o:update(dt)
 	-- position
 	self.pos = self.pos + self.vel * SPD * dt
 	
-	-- collision detection
+	-- collision detection: objects that canStandOn = true
 	for i,v in ipairs(entities) do
 		if v.canStandOn then
 			if helpers.withinX(self, v) and helpers.isAbove(self, v) then
 				self.pos.y = helpers.limit(self.pos.y, -999, v.pos.y - self.size.y)
-				self.inAir = false
 			end
 		end
 	end
+	
+	-- collision detection: walls
+	self.pos.x = helpers.limit( self.pos.x, 0, love.graphics.getWidth() - self.size.y )
+	
 	
 	o.acc = o.acc * 0
 end
