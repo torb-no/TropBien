@@ -3,7 +3,7 @@ local player, o = {}, {}
 local ACCELECARTION = 700
 local JUMP_ACC = -52000
 local TOP_VELOCITY = 500
-local FALL_ACCELERATION = 800
+local FALL_ACCELERATION = 1400
 local FRICTION = 500
 local TERMINAL_VELOCITY = 500
 local IMAGE = love.graphics.newImage("graphics/walk/Hat_man1.png")
@@ -14,6 +14,7 @@ function player.new(options)
 	o.acc = vector.new(0, 0) -- acceleration
 	o.size = vector.new(IMAGE:getWidth(), IMAGE:getHeight()) -- width and height
 	o.isStanding = false
+	o.turning = "right"
 	
 	return o
 end
@@ -22,8 +23,10 @@ function o:update(dt)
 	-- controls
 	if love.keyboard.isDown("left") then
 		self.acc.x = -ACCELECARTION
+		self.turning = "left"
 	elseif love.keyboard.isDown("right") then
 		self.acc.x = ACCELECARTION
+		self.turning = "right"
 	end
 	
 	-- gravity
@@ -73,7 +76,13 @@ end
 
 function o:draw()
 	love.graphics.setColor(255, 255, 255)
-	love.graphics.draw(IMAGE, self.pos.x, self.pos.y)
+	
+	if self.turning == "right" then
+		love.graphics.draw(IMAGE, self.pos.x, self.pos.y)
+	else
+		-- love.graphics.draw(standImage, player.x+standImage:getWidth(), player.y, 0, -1, 1)
+		love.graphics.draw(IMAGE, self.pos.x+IMAGE:getWidth(), self.pos.y, 0, -1, 1)
+	end
 end
 
 return player
