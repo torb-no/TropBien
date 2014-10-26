@@ -9,7 +9,7 @@ mode = 0
 local player = require "entities/player"
 local thePlayer = player.new{ x=100, y=100 }
 local boostProvider = require "entities/boostProvider"
-local deskFactory = require "entities/deskFactory"
+local entityHelpers = require "entities/entityHelpers"
 local background = love.graphics.newImage("graphics/background4.png")
 
 function love.load()
@@ -29,11 +29,10 @@ function love.load()
 	floor3 = box.new{ x=0, y=811, width=love.graphics.getWidth(), height=26 }
 	table.insert(entities, floor3)
 	
-	table.insert(entities, deskFactory.deskPairAtLocation(300, 30))
-	-- add some boxes
-	-- addBoxesOn{floor=floor1, minAmount=2, maxAmount=12}
-	-- addBoxesOn{floor=floor2, minAmount=2, maxAmount=12}
-	-- addBoxesOn{floor=floor3, minAmount=2, maxAmount=12}
+	
+	entityHelpers.addRandomDeskPair{floor=floor1, minAmount=3, maxAmount=4}
+	entityHelpers.addRandomDeskPair{floor=floor2, minAmount=2, maxAmount=4}
+	entityHelpers.addRandomDeskPair{floor=floor3, minAmount=0, maxAmount=2}
 end
 
 function addBoxesOn(options)
