@@ -14,7 +14,11 @@ local background = love.graphics.newImage("graphics/background4.png")
 
 function love.load()
 	-- random seed for boxadding
-	math.randomseed(os.time())
+	-- local seed = os.time()
+	-- math.randomseed(seed)
+	-- print(seed) -- in case we get a good one
+	
+	
 	
 	-- add player
 	table.insert(entities, thePlayer)
@@ -29,7 +33,8 @@ function love.load()
 	floor3 = box.new{ x=0, y=811, width=love.graphics.getWidth(), height=26 }
 	table.insert(entities, floor3)
 	
-	
+	-- level design by psuedorandomness!
+	math.randomseed(1414335193)
 	entityHelpers.addRandomDeskPair{floor=floor1, minAmount=3, maxAmount=4}
 	entityHelpers.addRandomDeskPair{floor=floor2, minAmount=2, maxAmount=4}
 	entityHelpers.addRandomDeskPair{floor=floor3, minAmount=0, maxAmount=2}
