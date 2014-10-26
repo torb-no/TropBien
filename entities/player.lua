@@ -1,11 +1,11 @@
 local player, o = {}, {}
 
 local ACCELECARTION = 700
-local JUMP_ACC = -20000
+local JUMP_ACC = -52000
 local TOP_VELOCITY = 500
-local FALL_ACCELERATION = 400
-local TERMINAL_VELOCITY = 150
+local FALL_ACCELERATION = 800
 local FRICTION = 500
+local TERMINAL_VELOCITY = 500
 local IMAGE = love.graphics.newImage("graphics/walk/Hat_man1.png")
 
 function player.new(options)
@@ -13,7 +13,7 @@ function player.new(options)
 	o.vel = vector.new(0, 0) -- velocity
 	o.acc = vector.new(0, 0) -- acceleration
 	o.size = vector.new(IMAGE:getWidth(), IMAGE:getHeight()) -- width and height
-	o.canStandOn = false
+	o.isStanding = false
 	
 	return o
 end
@@ -36,39 +36,42 @@ function o:update(dt)
 	friction = friction * FRICTION
 	self.acc.x = self.acc.x + friction.x
 
-	
 	-- velocity
 	self.vel = self.vel + self.acc * SPD * dt
 	self.vel.x = helpers.limit(self.vel.x, -TOP_VELOCITY, TOP_VELOCITY)
-	self.vel.y = helpers.limit(self.vel.y, -999999999, TERMINAL_VELOCITY)
+	self.vel.y = helpers.limit(self.vel.y, -TOP_VELOCITY, TERMINAL_VELOCITY)
 	
 	-- position
-	self.pos = self.pos + self.vel * SPD * dt
+	local newPos = self.pos + self.vel * SPD * dt
 	
+	self.isStanding = false
 	-- collision detection: objects that canStandOn = true
 	for i,v in ipairs(entities) do
-		if v.canStandOn then
-			if helpers.withinX(self, v) and helpers.isAbove(self, v) then
-				self.pos.y = helpers.limit(self.pos.y, -999, v.pos.y - self.size.y)
+		if v.isSolid then
+			if helpers.boxesIntersect(newPos, self.size, v.pos, v.top.size) and self.pos.y <= v.pos.y - self.size.y then
+				newPos.y = helpers.limit(newPos.y, -999, v.pos.y - self.size.y)
+				self.isStanding = true
 			end
 		end
 	end
 	
 	-- collision detection: walls
-	self.pos.x = helpers.limit( self.pos.x, 0, love.graphics.getWidth() - self.size.y )
+	newPos.x = helpers.limit( newPos.x, 0, love.graphics.getWidth() - self.size.y )
 	
+	self.pos = newPos
 	
 	o.acc = o.acc * 0
 end
 
 function o:jump()
-	self.acc.y = JUMP_ACC
+	if self.isStanding then
+		self.acc.y = JUMP_ACC
+	end
 end
 
 function o:draw()
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.draw(IMAGE, self.pos.x, self.pos.y)
-	-- love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 end
 
 return player

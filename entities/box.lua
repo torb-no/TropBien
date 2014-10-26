@@ -5,8 +5,12 @@ function box.new(options)
 	local self = setmetatable({}, box)
 	self.size = vector.new(options.width, options.height)
 	self.pos = vector.new(options.x, options.y)
-	self.canStandOn = true
+	self.isSolid = true
 	self.drawing = options.drawing
+	
+	self.top = {}
+	self.top.size = vector.new(options.width, 1)
+	self.top.pos = vector.new(options.x, options.y)
 
 	return self
 end
