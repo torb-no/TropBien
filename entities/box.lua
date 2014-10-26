@@ -3,10 +3,15 @@ box.__index = box
 
 function box.new(options)
 	local self = setmetatable({}, box)
-	self.size = vector.new(options.width, options.height)
-	self.pos = vector.new(options.x, options.y)
 	self.isSolid = true
 	self.drawing = options.drawing
+	
+	self.pos = vector.new(options.x, options.y)
+	if drawing and drawing:typeof("Image") then
+		self.size = vector.new(drawing:getDimensions())
+	else
+		self.size = vector.new(options.width, options.height)
+	end
 	
 	self.top = {}
 	self.top.size = vector.new(options.width, 1)
@@ -25,6 +30,9 @@ function box:draw()
 		else
 			love.graphics.setColor(255, 255, 255)
 			love.graphics.draw(self.drawing, self.pos.x, self.pos.y)
+			
+			-- love.graphics.setColor(255, 0, 0, 150)
+			-- love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 		end
 	end
 end

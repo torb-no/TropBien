@@ -41,11 +41,11 @@ function o:update(dt)
 	self.vel.x = helpers.limit(self.vel.x, -TOP_VELOCITY, TOP_VELOCITY)
 	self.vel.y = helpers.limit(self.vel.y, -TOP_VELOCITY, TERMINAL_VELOCITY)
 	
-	-- position
+	-- get new position (without collsion detection)
 	local newPos = self.pos + self.vel * SPD * dt
 	
+	-- collision detection: standing on
 	self.isStanding = false
-	-- collision detection: objects that canStandOn = true
 	for i,v in ipairs(entities) do
 		if v.isSolid then
 			if helpers.boxesIntersect(newPos, self.size, v.pos, v.top.size) and self.pos.y <= v.pos.y - self.size.y then
@@ -58,8 +58,10 @@ function o:update(dt)
 	-- collision detection: walls
 	newPos.x = helpers.limit( newPos.x, 0, love.graphics.getWidth() - self.size.y )
 	
+	-- apply new position
 	self.pos = newPos
 	
+	-- reset acceleration
 	o.acc = o.acc * 0
 end
 

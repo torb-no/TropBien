@@ -3,12 +3,14 @@ require "constants"
 helpers = require "lib/helpers"
 vector = require "lib/vector"
 entities = {}
+box = require "entities/box"
 mode = 0
 
 local player = require "entities/player"
 local thePlayer = player.new{ x=100, y=100 }
-local box = require "entities/box"
-local background = love.graphics.newImage("graphics/background.png")
+local boostProvider = require "entities/boostProvider"
+local deskFactory = require "entities/deskFactory"
+local background = love.graphics.newImage("graphics/background4.png")
 
 function love.load()
 	-- random seed for boxadding
@@ -27,11 +29,11 @@ function love.load()
 	floor3 = box.new{ x=0, y=811, width=love.graphics.getWidth(), height=26 }
 	table.insert(entities, floor3)
 	
+	table.insert(entities, deskFactory.deskPairAtLocation(300, 30))
 	-- add some boxes
-	addBoxesOn{floor=floor1, minAmount=2, maxAmount=12}
-	addBoxesOn{floor=floor2, minAmount=2, maxAmount=12}
-	addBoxesOn{floor=floor3, minAmount=2, maxAmount=12}
-
+	-- addBoxesOn{floor=floor1, minAmount=2, maxAmount=12}
+	-- addBoxesOn{floor=floor2, minAmount=2, maxAmount=12}
+	-- addBoxesOn{floor=floor3, minAmount=2, maxAmount=12}
 end
 
 function addBoxesOn(options)
