@@ -23,13 +23,13 @@ function love.load()
 	table.insert(entities, thePlayer)
 	
 	-- add floors
-	floor1 = box.new{ x=-50, y=251, width=love.graphics.getWidth()+50, height=26 }
+	floor1 = box.new{ x=-500, y=251, width=love.graphics.getWidth()+500, height=26 }
 	table.insert(entities, floor1)
 	
-	floor2 = box.new{ x=-50, y=531, width=love.graphics.getWidth()+50, height=26 }
+	floor2 = box.new{ x=-500, y=531, width=love.graphics.getWidth()+500, height=26 }
 	table.insert(entities, floor2)
 	
-	floor3 = box.new{ x=-50, y=811, width=love.graphics.getWidth()+50, height=26 }
+	floor3 = box.new{ x=-500, y=811, width=love.graphics.getWidth()+500, height=26 }
 	table.insert(entities, floor3)
 	
 	-- level design by psuedorandomness!

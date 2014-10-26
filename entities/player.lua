@@ -6,7 +6,7 @@ local TOP_VELOCITY = 500
 local FALL_ACCELERATION = 1400
 local FRICTION = 500
 local TERMINAL_VELOCITY = 500
-local IMAGE = love.graphics.newImage("graphics/walk/Hat_man1.png")
+local IMAGE = love.graphics.newImage("graphics/Hat_man_board.png")
 
 function player.new(options)
 	o.pos = vector.new(options.x, options.y) -- position
